@@ -1,3 +1,6 @@
+// =====================
+// SPACING
+// =====================
 interface Spacing {
   space_2: number;
   space_4: number;
@@ -32,7 +35,11 @@ export const SPACING: Spacing = {
   space_36: 36,
 };
 
+// =====================
+// COLORS
+// =====================
 interface Color {
+  primaryGreenHex: string;
   primaryRedHex: string;
   primaryOrangeHex: string;
   primaryBlackHex: string;
@@ -48,7 +55,8 @@ interface Color {
 }
 
 export const COLORS: Color = {
-  primaryRedHex: '#DC3535',
+  primaryGreenHex: '#0A9C4A',
+  primaryRedHex: '#E53935', // ✅ ajouté
   primaryOrangeHex: '#D17842',
   primaryBlackHex: '#0C0F14',
   primaryDarkGreyHex: '#141921',
@@ -62,6 +70,9 @@ export const COLORS: Color = {
   secondaryBlackRGBA: 'rgba(0,0,0,0.7)',
 };
 
+// =====================
+// FONT FAMILY
+// =====================
 interface FontFamily {
   poppins_black: string;
   poppins_bold: string;
@@ -86,6 +97,9 @@ export const FONTFAMILY: FontFamily = {
   poppins_thin: 'Poppins-Thin',
 };
 
+// =====================
+// FONT SIZE
+// =====================
 interface FontSize {
   size_8: number;
   size_10: number;
@@ -112,6 +126,9 @@ export const FONTSIZE: FontSize = {
   size_30: 30,
 };
 
+// =====================
+// BORDER RADIUS
+// =====================
 interface BorderRadius {
   radius_4: number;
   radius_8: number;
@@ -128,4 +145,20 @@ export const BORDERRADIUS: BorderRadius = {
   radius_15: 15,
   radius_20: 20,
   radius_25: 25,
+};
+
+// =====================
+// DARK / LIGHT COLORS
+// =====================
+export const getColors = (isDarkMode: boolean) => {
+  return {
+    background: isDarkMode ? COLORS.primaryBlackHex : '#F5F5F7',
+    surface: isDarkMode ? COLORS.primaryDarkGreyHex : COLORS.primaryWhiteHex,
+    text: isDarkMode ? COLORS.primaryWhiteHex : '#1D1D1D',
+    textSecondary: isDarkMode
+      ? COLORS.secondaryLightGreyHex
+      : COLORS.primaryLightGreyHex,
+    card: isDarkMode ? COLORS.secondaryDarkGreyHex : COLORS.primaryWhiteHex,
+    border: isDarkMode ? COLORS.primaryGreyHex : '#E0E0E0',
+  };
 };

@@ -6,7 +6,9 @@ import {
   FONTFAMILY,
   FONTSIZE,
   SPACING,
+  getColors,
 } from '../theme/theme';
+import {useStore} from '../store/store';
 
 interface PriceProps {
   price: string;
@@ -24,12 +26,20 @@ const PaymentFooter: React.FC<PaymentFooterProps> = ({
   buttonPressHandler,
   buttonTitle,
 }) => {
+  const isDarkMode = useStore((state: any) => state.isDarkMode);
+  const colors = getColors(isDarkMode);
+
   return (
-    <View style={styles.PriceFooter}>
+    <View style={[styles.PriceFooter, {backgroundColor: colors.surface}]}>
       <View style={styles.PriceContainer}>
-        <Text style={styles.PriceTitle}>Price</Text>
+        <Text style={[styles.PriceTitle, {color: colors.textSecondary}]}>
+          Price
+        </Text>
         <Text style={styles.PriceText}>
-          {price.currency} <Text style={styles.Price}>{price.price}</Text>
+          {price.currency}{' '}
+          <Text style={[styles.Price, {color: colors.text}]}>
+            {price.price}
+          </Text>
         </Text>
       </View>
       <TouchableOpacity
@@ -48,6 +58,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: SPACING.space_20,
     padding: SPACING.space_20,
+    borderTopLeftRadius: BORDERRADIUS.radius_20,
+    borderTopRightRadius: BORDERRADIUS.radius_20,
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: -2},
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 4,
   },
   PriceContainer: {
     alignItems: 'center',
@@ -56,18 +73,17 @@ const styles = StyleSheet.create({
   PriceTitle: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_14,
-    color: COLORS.secondaryLightGreyHex,
   },
   PriceText: {
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_24,
-    color: COLORS.primaryOrangeHex,
+    color: '#0A9C4A',
   },
   Price: {
-    color: COLORS.primaryWhiteHex,
+    color: '#0A9C4A',
   },
   PayButton: {
-    backgroundColor: COLORS.primaryOrangeHex,
+    backgroundColor: '#0A9C4A',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

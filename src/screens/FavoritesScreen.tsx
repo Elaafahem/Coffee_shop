@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import {useStore} from '../store/store';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import {COLORS, SPACING} from '../theme/theme';
+import {COLORS, SPACING, getColors} from '../theme/theme';
 import HeaderBar from '../components/HeaderBar';
 import EmptyListAnimation from '../components/EmptyListAnimation';
 import FavoritesItemCard from '../components/FavoritesItemCard';
+import CoffeeCard from '../components/CoffeeCard';
 
 const FavoritesScreen = ({navigation}: any) => {
   const FavoritesList = useStore((state: any) => state.FavoritesList);
@@ -21,12 +22,17 @@ const FavoritesScreen = ({navigation}: any) => {
   const deleteFromFavoriteList = useStore(
     (state: any) => state.deleteFromFavoriteList,
   );
+  const isDarkMode = useStore((state: any) => state.isDarkMode);
+  const colors = getColors(isDarkMode);
   const ToggleFavourite = (favourite: boolean, type: string, id: string) => {
     favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id);
   };
   return (
-    <View style={styles.ScreenContainer}>
-      <StatusBar backgroundColor={COLORS.primaryBlackHex} />
+    <View style={[styles.ScreenContainer, {backgroundColor: colors.background}]}>
+      <StatusBar
+        backgroundColor={colors.background}
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+      />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -42,27 +48,30 @@ const FavoritesScreen = ({navigation}: any) => {
               <View style={styles.ListItemContainer}>
                 {FavoritesList.map((data: any) => (
                   <TouchableOpacity
+                    key={data.id}
                     onPress={() => {
                       navigation.push('Details', {
                         index: data.index,
                         id: data.id,
                         type: data.type,
                       });
-                    }}
-                    key={data.id}>
-                    <FavoritesItemCard
+                    }}>
+                    <CoffeeCard
                       id={data.id}
-                      imagelink_portrait={data.imagelink_portrait}
+                      index={data.index}
+                      type={data.type}
+                      roasted={data.roasted}
+                      imagelink_square={data.imagelink_square}
                       name={data.name}
                       special_ingredient={data.special_ingredient}
-                      type={data.type}
-                      ingredients={data.ingredients}
                       average_rating={data.average_rating}
-                      ratings_count={data.ratings_count}
-                      roasted={data.roasted}
-                      description={data.description}
+                      price={data.prices[2]}
+                      buttonPressHandler={() => {}}
+                      isFavouriteCard
                       favourite={data.favourite}
-                      ToggleFavouriteItem={ToggleFavourite}
+                      onToggleFavourite={() =>
+                        ToggleFavourite(data.favourite, data.type, data.id)
+                      }
                     />
                   </TouchableOpacity>
                 ))}
@@ -78,7 +87,6 @@ const FavoritesScreen = ({navigation}: any) => {
 const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
-    backgroundColor: COLORS.primaryBlackHex,
   },
   ScrollViewFlex: {
     flexGrow: 1,
@@ -92,7 +100,11 @@ const styles = StyleSheet.create({
   },
   ListItemContainer: {
     paddingHorizontal: SPACING.space_20,
-    gap: SPACING.space_20,
+    paddingBottom: SPACING.space_20,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    rowGap: SPACING.space_20,
   },
 });
 

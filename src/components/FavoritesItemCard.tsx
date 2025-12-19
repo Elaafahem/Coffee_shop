@@ -55,14 +55,10 @@ const FavoritesItemCard: React.FC<FavoritesItemCardProps> = ({
         roasted={roasted}
         ToggleFavourite={ToggleFavouriteItem}
       />
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 1}}
-        colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
-        style={styles.ContainerLinearGradient}>
+      <View style={styles.DescriptionContainer}>
         <Text style={styles.DescriptionTitle}>Description</Text>
         <Text style={styles.DescriptionText}>{description}</Text>
-      </LinearGradient>
+      </View>
     </View>
   );
 };
@@ -72,19 +68,20 @@ const styles = StyleSheet.create({
     borderRadius: BORDERRADIUS.radius_25,
     overflow: 'hidden',
   },
-  ContainerLinearGradient: {
+  DescriptionContainer: {
     gap: SPACING.space_10,
     padding: SPACING.space_20,
+    backgroundColor: '#FFFFFF',
   },
   DescriptionTitle: {
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_16,
-    color: COLORS.secondaryLightGreyHex,
+    color: '#1D1D1D',
   },
   DescriptionText: {
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_14,
-    color: COLORS.primaryWhiteHex,
+    color: '#4D4D4D',
   },
 });
 

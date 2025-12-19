@@ -17,30 +17,23 @@ import {
 import GradientBGIcon from '../components/GradientBGIcon';
 import PaymentMethod from '../components/PaymentMethod';
 import PaymentFooter from '../components/PaymentFooter';
-import LinearGradient from 'react-native-linear-gradient';
-import CustomIcon from '../components/CustomIcon';
 import {useStore} from '../store/store';
 import PopUpAnimation from '../components/PopUpAnimation';
 
 const PaymentList = [
   {
-    name: 'Wallet',
-    icon: 'icon',
-    isIcon: true,
-  },
-  {
-    name: 'Google Pay',
-    icon: require('../assets/app_images/gpay.png'),
+    name: 'Visa',
+    icon: null,
     isIcon: false,
   },
   {
-    name: 'Apple Pay',
-    icon: require('../assets/app_images/applepay.png'),
+    name: 'PayPal',
+    icon: null,
     isIcon: false,
   },
   {
-    name: 'Amazon Pay',
-    icon: require('../assets/app_images/amazonpay.png'),
+    name: 'MasterCard',
+    icon: null,
     isIcon: false,
   },
 ];
@@ -51,7 +44,7 @@ const PaymentScreen = ({navigation, route}: any) => {
     (state: any) => state.addToOrderHistoryListFromCart,
   );
 
-  const [paymentMode, setPaymentMode] = useState('Credit Card');
+  const [paymentMode, setPaymentMode] = useState('Visa');
   const [showAnimation, setShowAnimation] = useState(false);
 
   const buttonPressHandler = () => {
@@ -60,13 +53,14 @@ const PaymentScreen = ({navigation, route}: any) => {
     calculateCartPrice();
     setTimeout(() => {
       setShowAnimation(false);
-      navigation.navigate('History');
-    }, 2000);
+      // Après paiement, on revient à l'accueil (tabs)
+      navigation.navigate('Tab');
+    }, 1500);
   };
 
   return (
     <View style={styles.ScreenContainer}>
-      <StatusBar backgroundColor={COLORS.primaryBlackHex} />
+      <StatusBar backgroundColor="#F5F5F7" barStyle="dark-content" />
 
       {showAnimation ? (
         <PopUpAnimation
@@ -95,7 +89,9 @@ const PaymentScreen = ({navigation, route}: any) => {
           <View style={styles.EmptyView} />
         </View>
 
-        <View style={styles.PaymentOptionsContainer}>
+        <View style={styles.CardContainer}>
+          <Text style={styles.SectionTitle}>Payment method</Text>
+
           <TouchableOpacity
             onPress={() => {
               setPaymentMode('Credit Card');
@@ -103,58 +99,17 @@ const PaymentScreen = ({navigation, route}: any) => {
             <View
               style={[
                 styles.CreditCardContainer,
-                {
-                  borderColor:
-                    paymentMode == 'Credit Card'
-                      ? COLORS.primaryOrangeHex
-                      : COLORS.primaryGreyHex,
-                },
+                paymentMode === 'Credit Card' && styles.CreditCardContainerActive,
               ]}>
-              <Text style={styles.CreditCardTitle}>Credit Card</Text>
-              <View style={styles.CreditCardBG}>
-                <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 1}}
-                  style={styles.LinearGradientStyle}
-                  colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}>
-                  <View style={styles.CreditCardRow}>
-                    <CustomIcon
-                      name="chip"
-                      size={FONTSIZE.size_20 * 2}
-                      color={COLORS.primaryOrangeHex}
-                    />
-                    <CustomIcon
-                      name="visa"
-                      size={FONTSIZE.size_30 * 2}
-                      color={COLORS.primaryWhiteHex}
-                    />
-                  </View>
-                  <View style={styles.CreditCardNumberContainer}>
-                    <Text style={styles.CreditCardNumber}>3879</Text>
-                    <Text style={styles.CreditCardNumber}>8923</Text>
-                    <Text style={styles.CreditCardNumber}>6745</Text>
-                    <Text style={styles.CreditCardNumber}>4638</Text>
-                  </View>
-                  <View style={styles.CreditCardRow}>
-                    <View style={styles.CreditCardNameContainer}>
-                      <Text style={styles.CreditCardNameSubitle}>
-                        Card Holder Name
-                      </Text>
-                      <Text style={styles.CreditCardNameTitle}>
-                        Robert Evans
-                      </Text>
-                    </View>
-                    <View style={styles.CreditCardDateContainer}>
-                      <Text style={styles.CreditCardNameSubitle}>
-                        Expiry Date
-                      </Text>
-                      <Text style={styles.CreditCardNameTitle}>02/30</Text>
-                    </View>
-                  </View>
-                </LinearGradient>
+              <Text style={styles.CreditCardLabel}>Credit Card</Text>
+              <Text style={styles.CreditCardNumber}>**** **** **** 4638</Text>
+              <View style={styles.CreditCardRow}>
+                <Text style={styles.CreditCardName}>Robert Evans</Text>
+                <Text style={styles.CreditCardExpiry}>02/30</Text>
               </View>
             </View>
           </TouchableOpacity>
+
           {PaymentList.map((data: any) => (
             <TouchableOpacity
               key={data.name}
@@ -184,13 +139,14 @@ const PaymentScreen = ({navigation, route}: any) => {
 const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
-    backgroundColor: COLORS.primaryBlackHex,
+    backgroundColor: COLORS.primaryWhiteHex,
   },
   LottieAnimation: {
     flex: 1,
   },
   ScrollViewFlex: {
     flexGrow: 1,
+    paddingBottom: SPACING.space_24,
   },
   HeaderContainer: {
     paddingHorizontal: SPACING.space_24,
@@ -202,69 +158,71 @@ const styles = StyleSheet.create({
   HeaderText: {
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_20,
-    color: COLORS.primaryWhiteHex,
+    color: '#1D1D1D',
   },
   EmptyView: {
     height: SPACING.space_36,
     width: SPACING.space_36,
   },
+  CardContainer: {
+    marginHorizontal: SPACING.space_24,
+    marginTop: SPACING.space_10,
+    padding: SPACING.space_16,
+    borderRadius: BORDERRADIUS.radius_20,
+    backgroundColor: COLORS.primaryWhiteHex,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    shadowOffset: {width: 0, height: 3},
+  },
+  SectionTitle: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_16,
+    color: COLORS.primaryBlackHex,
+    marginBottom: SPACING.space_12,
+  },
   PaymentOptionsContainer: {
-    padding: SPACING.space_15,
-    gap: SPACING.space_15,
+    gap: SPACING.space_12,
   },
   CreditCardContainer: {
-    padding: SPACING.space_10,
-    gap: SPACING.space_10,
+    padding: SPACING.space_12,
     borderRadius: BORDERRADIUS.radius_15 * 2,
-    borderWidth: 3,
+    borderWidth: 1.5,
+    borderColor: COLORS.secondaryLightGreyHex,
+    backgroundColor: COLORS.primaryWhiteHex,
+    marginBottom: SPACING.space_12,
   },
-  CreditCardTitle: {
-    fontFamily: FONTFAMILY.poppins_semibold,
-    fontSize: FONTSIZE.size_14,
-    color: COLORS.primaryWhiteHex,
-    marginLeft: SPACING.space_10,
+  CreditCardContainerActive: {
+    borderColor: COLORS.primaryOrangeHex,
   },
-  CreditCardBG: {
-    backgroundColor: COLORS.primaryGreyHex,
-    borderRadius: BORDERRADIUS.radius_25,
-  },
-  LinearGradientStyle: {
-    borderRadius: BORDERRADIUS.radius_25,
-    gap: SPACING.space_36,
-    paddingHorizontal: SPACING.space_15,
-    paddingVertical: SPACING.space_10,
-  },
-  CreditCardRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  CreditCardNumberContainer: {
-    flexDirection: 'row',
-    gap: SPACING.space_10,
-    alignItems: 'center',
-  },
-  CreditCardNumber: {
-    fontFamily: FONTFAMILY.poppins_semibold,
-    fontSize: FONTSIZE.size_18,
-    color: COLORS.primaryWhiteHex,
-    letterSpacing: SPACING.space_4 + SPACING.space_2,
-  },
-  CreditCardNameSubitle: {
+  CreditCardLabel: {
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_12,
     color: COLORS.secondaryLightGreyHex,
   },
-  CreditCardNameTitle: {
-    fontFamily: FONTFAMILY.poppins_medium,
+  CreditCardNumber: {
+    marginTop: SPACING.space_4,
+    fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_18,
-    color: COLORS.primaryWhiteHex,
+    color: COLORS.primaryBlackHex,
+    letterSpacing: 3,
   },
-  CreditCardNameContainer: {
-    alignItems: 'flex-start',
+  CreditCardRow: {
+    marginTop: SPACING.space_8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  CreditCardDateContainer: {
-    alignItems: 'flex-end',
+  CreditCardName: {
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryBlackHex,
+  },
+  CreditCardExpiry: {
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryBlackHex,
   },
 });
 

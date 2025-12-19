@@ -1,31 +1,32 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {COLORS} from '../theme/theme';
+import {COLORS, getColors} from '../theme/theme';
 import {BlurView} from '@react-native-community/blur';
 import HomeScreen from '../screens/HomeScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import CartScreen from '../screens/CartScreen';
-import OrderHistoryScreen from '../screens/OrderHistoryScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import ProfilePic from '../components/ProfilePic';
 import CustomIcon from '../components/CustomIcon';
+import {useStore} from '../store/store';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  const isDarkMode = useStore((state: any) => state.isDarkMode);
+  const colors = getColors(isDarkMode);
+
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: styles.tabBarStyle,
-        tabBarBackground: () => (
-          <BlurView
-            overlayColor=""
-            blurAmount={15}
-            style={styles.BlurViewStyles}
-          />
-        ),
+        tabBarStyle: [
+          styles.tabBarStyle,
+          {backgroundColor: colors.surface},
+        ],
       }}>
       <Tab.Screen
         name="Home"
@@ -36,7 +37,7 @@ const TabNavigator = () => {
               name="home"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? '#0A9C4A' : COLORS.primaryLightGreyHex
               }
             />
           ),
@@ -50,7 +51,7 @@ const TabNavigator = () => {
               name="cart"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? '#0A9C4A' : COLORS.primaryLightGreyHex
               }
             />
           ),
@@ -64,23 +65,17 @@ const TabNavigator = () => {
               name="like"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? '#0A9C4A' : COLORS.primaryLightGreyHex
               }
             />
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name="History"
-        component={OrderHistoryScreen}
+        name="Profile"
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({focused, color, size}) => (
-            <CustomIcon
-              name="bell"
-              size={25}
-              color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
-              }
-            />
+            <ProfilePic />
           ),
         }}></Tab.Screen>
     </Tab.Navigator>
@@ -91,7 +86,6 @@ const styles = StyleSheet.create({
   tabBarStyle: {
     height: 80,
     position: 'absolute',
-    backgroundColor: COLORS.primaryBlackRGBA,
     borderTopWidth: 0,
     elevation: 0,
     borderTopColor: 'transparent',

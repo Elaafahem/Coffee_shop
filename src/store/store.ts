@@ -8,6 +8,60 @@ import BeansData from '../data/BeansData';
 export const useStore = create(
   persist(
     (set, get) => ({
+      // Dark Mode
+      isDarkMode: false,
+      toggleDarkMode: () => set((state: any) => ({isDarkMode: !state.isDarkMode})),
+      // Informations utilisateur
+      userName: '',
+      setUserName: (name: string) => set({userName: name}),
+      user: null,
+      // email courant pour associer panier / favoris
+      currentUserEmail: '',
+      // Données par utilisateur (clé = email)
+      userDataByEmail: {},
+      setUser: (user: any) =>
+        set((state: any) => {
+          const email =
+            user?.email && typeof user.email === 'string'
+              ? user.email.toLowerCase()
+              : '';
+
+          const existingData =
+            email && state.userDataByEmail[email]
+              ? state.userDataByEmail[email]
+              : {
+                  CartList: [],
+                  FavoritesList: [],
+                  OrderHistoryList: [],
+                  CartPrice: 0,
+                };
+
+          return {
+            ...state,
+            user,
+            userName: user?.name || '',
+            currentUserEmail: email,
+            CartList: existingData.CartList || [],
+            FavoritesList: existingData.FavoritesList || [],
+            OrderHistoryList: existingData.OrderHistoryList || [],
+            CartPrice: existingData.CartPrice || 0,
+            userDataByEmail: {
+              ...state.userDataByEmail,
+              ...(email ? {[email]: existingData} : {}),
+            },
+          };
+        }),
+      clearUser: () =>
+        set((state: any) => ({
+          ...state,
+          user: null,
+          userName: '',
+          currentUserEmail: '',
+          CartList: [],
+          FavoritesList: [],
+          OrderHistoryList: [],
+          CartPrice: 0,
+        })),
       CoffeeList: CoffeeData,
       BeanList: BeansData,
       CartPrice: 0,
@@ -16,7 +70,7 @@ export const useStore = create(
       OrderHistoryList: [],
       addToCart: (cartItem: any) =>
         set(
-          produce(state => {
+          produce((state: any) => {
             let found = false;
             for (let i = 0; i < state.CartList.length; i++) {
               if (state.CartList[i].id == cartItem.id) {
@@ -49,11 +103,24 @@ export const useStore = create(
             if (found == false) {
               state.CartList.push(cartItem);
             }
+
+            const email = state.currentUserEmail;
+            if (email) {
+              if (!state.userDataByEmail[email]) {
+                state.userDataByEmail[email] = {
+                  CartList: [],
+                  FavoritesList: [],
+                  OrderHistoryList: [],
+                  CartPrice: 0,
+                };
+              }
+              state.userDataByEmail[email].CartList = state.CartList;
+            }
           }),
         ),
       calculateCartPrice: () =>
         set(
-          produce(state => {
+          produce((state: any) => {
             let totalprice = 0;
             for (let i = 0; i < state.CartList.length; i++) {
               let tempprice = 0;
@@ -67,11 +134,16 @@ export const useStore = create(
               totalprice = totalprice + tempprice;
             }
             state.CartPrice = totalprice.toFixed(2).toString();
+
+            const email = state.currentUserEmail;
+            if (email && state.userDataByEmail[email]) {
+              state.userDataByEmail[email].CartPrice = state.CartPrice;
+            }
           }),
         ),
       addToFavoriteList: (type: string, id: string) =>
         set(
-          produce(state => {
+          produce((state: any) => {
             if (type == 'Coffee') {
               for (let i = 0; i < state.CoffeeList.length; i++) {
                 if (state.CoffeeList[i].id == id) {
@@ -97,11 +169,23 @@ export const useStore = create(
                 }
               }
             }
+            const email = state.currentUserEmail;
+            if (email) {
+              if (!state.userDataByEmail[email]) {
+                state.userDataByEmail[email] = {
+                  CartList: [],
+                  FavoritesList: [],
+                  OrderHistoryList: [],
+                  CartPrice: 0,
+                };
+              }
+              state.userDataByEmail[email].FavoritesList = state.FavoritesList;
+            }
           }),
         ),
       deleteFromFavoriteList: (type: string, id: string) =>
         set(
-          produce(state => {
+          produce((state: any) => {
             if (type == 'Coffee') {
               for (let i = 0; i < state.CoffeeList.length; i++) {
                 if (state.CoffeeList[i].id == id) {
@@ -133,11 +217,16 @@ export const useStore = create(
               }
             }
             state.FavoritesList.splice(spliceIndex, 1);
+
+            const email = state.currentUserEmail;
+            if (email && state.userDataByEmail[email]) {
+              state.userDataByEmail[email].FavoritesList = state.FavoritesList;
+            }
           }),
         ),
       incrementCartItemQuantity: (id: string, size: string) =>
         set(
-          produce(state => {
+          produce((state: any) => {
             for (let i = 0; i < state.CartList.length; i++) {
               if (state.CartList[i].id == id) {
                 for (let j = 0; j < state.CartList[i].prices.length; j++) {
@@ -148,11 +237,16 @@ export const useStore = create(
                 }
               }
             }
+
+            const email = state.currentUserEmail;
+            if (email && state.userDataByEmail[email]) {
+              state.userDataByEmail[email].CartList = state.CartList;
+            }
           }),
         ),
       decrementCartItemQuantity: (id: string, size: string) =>
         set(
-          produce(state => {
+          produce((state: any) => {
             for (let i = 0; i < state.CartList.length; i++) {
               if (state.CartList[i].id == id) {
                 for (let j = 0; j < state.CartList[i].prices.length; j++) {
@@ -175,11 +269,16 @@ export const useStore = create(
                 }
               }
             }
+
+            const email = state.currentUserEmail;
+            if (email && state.userDataByEmail[email]) {
+              state.userDataByEmail[email].CartList = state.CartList;
+            }
           }),
         ),
       addToOrderHistoryListFromCart: () =>
         set(
-          produce(state => {
+          produce((state: any) => {
             let temp = state.CartList.reduce(
               (accumulator: number, currentValue: any) =>
                 accumulator + parseFloat(currentValue.ItemPrice),
@@ -205,6 +304,22 @@ export const useStore = create(
               });
             }
             state.CartList = [];
+
+            const email = state.currentUserEmail;
+            if (email) {
+              if (!state.userDataByEmail[email]) {
+                state.userDataByEmail[email] = {
+                  CartList: [],
+                  FavoritesList: [],
+                  OrderHistoryList: [],
+                  CartPrice: 0,
+                };
+              }
+              state.userDataByEmail[email].OrderHistoryList =
+                state.OrderHistoryList;
+              state.userDataByEmail[email].CartList = state.CartList;
+              state.userDataByEmail[email].CartPrice = state.CartPrice;
+            }
           }),
         ),
     }),

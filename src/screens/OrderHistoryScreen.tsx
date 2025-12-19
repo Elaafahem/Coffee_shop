@@ -43,7 +43,7 @@ const OrderHistoryScreen = ({navigation}: any) => {
 
   return (
     <View style={styles.ScreenContainer}>
-      <StatusBar backgroundColor={COLORS.primaryBlackHex} />
+      <StatusBar backgroundColor="#F5F5F7" barStyle="dark-content" />
 
       {showAnimation ? (
         <PopUpAnimation
@@ -98,7 +98,7 @@ const OrderHistoryScreen = ({navigation}: any) => {
 const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
-    backgroundColor: COLORS.primaryBlackHex,
+    backgroundColor: '#F5F5F7',
   },
   LottieAnimation: {
     height: 250,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   DownloadButton: {
     margin: SPACING.space_20,
-    backgroundColor: COLORS.primaryOrangeHex,
+    backgroundColor: '#0A9C4A',
     alignItems: 'center',
     justifyContent: 'center',
     height: SPACING.space_36 * 2,

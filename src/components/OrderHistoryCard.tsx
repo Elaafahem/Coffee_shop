@@ -6,8 +6,10 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING, getColors } from '../theme/theme';
 import OrderItemCard from './OrderItemCard';
+import { useStore } from '../store/store';
+
 interface OrderHistoryCardProps {
   navigationHandler: any;
   CartList: any;
@@ -20,15 +22,18 @@ const OrderHistoryCard: React.FC<OrderHistoryCardProps> = ({
   CartListPrice,
   OrderDate,
 }) => {
+  const isDarkMode = useStore((state: any) => state.isDarkMode);
+  const colors = getColors(isDarkMode);
+
   return (
     <View style={styles.CardContainer}>
       <View style={styles.CardHeader}>
         <View>
-          <Text style={styles.HeaderTitle}>Order Time</Text>
-          <Text style={styles.HeaderSubtitle}>{OrderDate}</Text>
+          <Text style={[styles.HeaderTitle, { color: colors.text }]}>Order Time</Text>
+          <Text style={[styles.HeaderSubtitle, { color: colors.textSecondary }]}>{OrderDate}</Text>
         </View>
         <View style={styles.PriceContainer}>
-          <Text style={styles.HeaderTitle}>Total Amount</Text>
+          <Text style={[styles.HeaderTitle, { color: colors.text }]}>Total Amount</Text>
           <Text style={styles.HeaderPrice}>$ {CartListPrice}</Text>
         </View>
       </View>
@@ -71,12 +76,10 @@ const styles = StyleSheet.create({
   HeaderTitle: {
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_16,
-    color: COLORS.primaryWhiteHex,
   },
   HeaderSubtitle: {
     fontFamily: FONTFAMILY.poppins_light,
     fontSize: FONTSIZE.size_16,
-    color: COLORS.primaryWhiteHex,
   },
   PriceContainer: {
     alignItems: 'flex-end',
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
   HeaderPrice: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_18,
-    color: COLORS.primaryOrangeHex,
+    color: '#0A9C4A',
   },
   ListContainer: {
     gap: SPACING.space_20,

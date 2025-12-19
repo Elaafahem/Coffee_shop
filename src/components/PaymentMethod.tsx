@@ -31,14 +31,14 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
           borderColor:
             paymentMode == name
               ? COLORS.primaryOrangeHex
-              : COLORS.primaryGreyHex,
+              : COLORS.secondaryLightGreyHex,
         },
       ]}>
       {isIcon ? (
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
-          colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
+          colors={['#FFFFFF', '#FFFFFF']}
           style={styles.LinearGradientWallet}>
           <View style={styles.WalletRow}>
             <CustomIcon
@@ -54,9 +54,11 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
-          colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
+          colors={['#FFFFFF', '#FFFFFF']}
           style={styles.LinearGradientRegular}>
-          <Image source={icon} style={styles.PaymentImage} />
+          {icon ? (
+            <Image source={icon} style={styles.PaymentImage} />
+          ) : null}
           <Text style={styles.PaymentTitle}>{name}</Text>
         </LinearGradient>
       )}
@@ -67,8 +69,8 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
 const styles = StyleSheet.create({
   PaymentCardContainer: {
     borderRadius: BORDERRADIUS.radius_15 * 2,
-    backgroundColor: COLORS.primaryGreyHex,
-    borderWidth: 3,
+    backgroundColor: COLORS.primaryWhiteHex,
+    borderWidth: 1.5,
   },
   LinearGradientWallet: {
     flexDirection: 'row',
@@ -95,12 +97,12 @@ const styles = StyleSheet.create({
   PaymentTitle: {
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_16,
-    color: COLORS.primaryWhiteHex,
+    color: COLORS.primaryBlackHex,
   },
   PaymentPrice: {
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_16,
-    color: COLORS.secondaryLightGreyHex,
+    color: COLORS.secondaryDarkGreyHex,
   },
   PaymentImage: {
     height: SPACING.space_30,
