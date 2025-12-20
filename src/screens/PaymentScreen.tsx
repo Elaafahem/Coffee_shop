@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -17,8 +17,7 @@ import {
 import GradientBGIcon from '../components/GradientBGIcon';
 import PaymentMethod from '../components/PaymentMethod';
 import PaymentFooter from '../components/PaymentFooter';
-import {useStore} from '../store/store';
-import PopUpAnimation from '../components/PopUpAnimation';
+import { useStore } from '../store/store';
 
 const PaymentList = [
   {
@@ -38,38 +37,24 @@ const PaymentList = [
   },
 ];
 
-const PaymentScreen = ({navigation, route}: any) => {
+const PaymentScreen = ({ navigation, route }: any) => {
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
   const addToOrderHistoryListFromCart = useStore(
     (state: any) => state.addToOrderHistoryListFromCart,
   );
 
   const [paymentMode, setPaymentMode] = useState('Visa');
-  const [showAnimation, setShowAnimation] = useState(false);
 
   const buttonPressHandler = () => {
-    setShowAnimation(true);
     addToOrderHistoryListFromCart();
     calculateCartPrice();
-    setTimeout(() => {
-      setShowAnimation(false);
-      // Après paiement, on revient à l'accueil (tabs)
-      navigation.navigate('Tab');
-    }, 1500);
+    // On revient à l'accueil directement
+    navigation.navigate('Tab');
   };
 
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor="#F5F5F7" barStyle="dark-content" />
-
-      {showAnimation ? (
-        <PopUpAnimation
-          style={styles.LottieAnimation}
-          source={require('../lottie/successful.json')}
-        />
-      ) : (
-        <></>
-      )}
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -129,7 +114,7 @@ const PaymentScreen = ({navigation, route}: any) => {
 
       <PaymentFooter
         buttonTitle={`Pay with ${paymentMode}`}
-        price={{price: route.params.amount, currency: '$'}}
+        price={{ price: route.params.amount, currency: '$' }}
         buttonPressHandler={buttonPressHandler}
       />
     </View>
@@ -174,7 +159,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 6,
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
   },
   SectionTitle: {
     fontFamily: FONTFAMILY.poppins_semibold,

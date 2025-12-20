@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   StatusBar,
@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
-import {useStore} from '../store/store';
+import { useStore } from '../store/store';
 import {
   BORDERRADIUS,
   COLORS,
@@ -20,10 +20,8 @@ import {
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
 import PaymentFooter from '../components/PaymentFooter';
 
-const DetailsScreen = ({navigation, route}: any) => {
-  const ItemOfIndex = useStore((state: any) =>
-    route.params.type == 'Coffee' ? state.CoffeeList : state.BeanList,
-  )[route.params.index];
+const DetailsScreen = ({ navigation, route }: any) => {
+  const ItemOfIndex = useStore((state: any) => state.CoffeeList)[route.params.index];
   const addToFavoriteList = useStore((state: any) => state.addToFavoriteList);
   const deleteFromFavoriteList = useStore(
     (state: any) => state.deleteFromFavoriteList,
@@ -63,14 +61,14 @@ const DetailsScreen = ({navigation, route}: any) => {
       imagelink_square,
       special_ingredient,
       type,
-      prices: [{...price, quantity: 1}],
+      prices: [{ ...price, quantity: 1 }],
     });
     calculateCartPrice();
     navigation.navigate('Cart');
   };
 
   return (
-    <View style={[styles.ScreenContainer, {backgroundColor: colors.background}]}>
+    <View style={[styles.ScreenContainer, { backgroundColor: colors.background }]}>
       <StatusBar
         backgroundColor={colors.background}
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
@@ -94,8 +92,8 @@ const DetailsScreen = ({navigation, route}: any) => {
           ToggleFavourite={ToggleFavourite}
         />
 
-        <View style={[styles.FooterInfoArea, {backgroundColor: colors.surface}]}>
-          <Text style={[styles.InfoTitle, {color: colors.text}]}>Cup Size</Text>
+        <View style={[styles.FooterInfoArea, { backgroundColor: colors.surface }]}>
+          <Text style={[styles.InfoTitle, { color: colors.text }]}>Cup Size</Text>
           <View style={styles.SizeOuterContainer}>
             {ItemOfIndex.prices.map((data: any) => (
               <TouchableOpacity
@@ -120,10 +118,7 @@ const DetailsScreen = ({navigation, route}: any) => {
                   style={[
                     styles.SizeText,
                     {
-                      fontSize:
-                        ItemOfIndex.type == 'Bean'
-                          ? FONTSIZE.size_14
-                          : FONTSIZE.size_16,
+                      fontSize: FONTSIZE.size_16,
                       color:
                         data.size === price.size
                           ? '#FFFFFF'
@@ -135,7 +130,7 @@ const DetailsScreen = ({navigation, route}: any) => {
               </TouchableOpacity>
             ))}
           </View>
-          <Text style={[styles.InfoTitle, {marginTop: SPACING.space_20, color: colors.text}]}>
+          <Text style={[styles.InfoTitle, { marginTop: SPACING.space_20, color: colors.text }]}>
             Level Sugar
           </Text>
           <View style={styles.SugarOuterContainer}>
@@ -167,7 +162,7 @@ const DetailsScreen = ({navigation, route}: any) => {
               </TouchableOpacity>
             ))}
           </View>
-          <Text style={[styles.InfoTitle, {marginTop: SPACING.space_20, color: colors.text}]}>
+          <Text style={[styles.InfoTitle, { marginTop: SPACING.space_20, color: colors.text }]}>
             About
           </Text>
           {fullDesc ? (
@@ -175,7 +170,7 @@ const DetailsScreen = ({navigation, route}: any) => {
               onPress={() => {
                 setFullDesc(prev => !prev);
               }}>
-              <Text style={[styles.DescriptionText, {color: colors.textSecondary}]}>
+              <Text style={[styles.DescriptionText, { color: colors.textSecondary }]}>
                 {ItemOfIndex.description}
               </Text>
             </TouchableWithoutFeedback>
@@ -184,7 +179,7 @@ const DetailsScreen = ({navigation, route}: any) => {
               onPress={() => {
                 setFullDesc(prev => !prev);
               }}>
-              <Text numberOfLines={3} style={[styles.DescriptionText, {color: colors.textSecondary}]}>
+              <Text numberOfLines={3} style={[styles.DescriptionText, { color: colors.textSecondary }]}>
                 {ItemOfIndex.description}
               </Text>
             </TouchableWithoutFeedback>

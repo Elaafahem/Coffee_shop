@@ -17,7 +17,7 @@ import {
   getColors,
 } from '../theme/theme';
 import CustomIcon from './CustomIcon';
-import {useStore} from '../store/store';
+import { useStore } from '../store/store';
 
 interface CartItemProps {
   id: string;
@@ -48,20 +48,20 @@ const CartItem: React.FC<CartItemProps> = ({
   return (
     <View>
       {prices.length != 1 ? (
-        <View style={[styles.CartItemCard, {backgroundColor: colors.surface}]}>
+        <View style={[styles.CartItemCard, { backgroundColor: colors.surface }]}>
           <View style={styles.CartItemRow}>
             <Image source={imagelink_square} style={styles.CartItemImage} />
             <View style={styles.CartItemInfo}>
               <View>
-                <Text style={[styles.CartItemTitle, {color: colors.text}]}>
+                <Text style={[styles.CartItemTitle, { color: colors.text }]}>
                   {name}
                 </Text>
-                <Text style={[styles.CartItemSubtitle, {color: colors.textSecondary}]}>
+                <Text style={[styles.CartItemSubtitle, { color: colors.textSecondary }]}>
                   {special_ingredient}
                 </Text>
               </View>
-              <View style={[styles.CartItemRoastedContainer, {backgroundColor: colors.background}]}>
-                <Text style={[styles.CartItemRoastedText, {color: colors.textSecondary}]}>
+              <View style={[styles.CartItemRoastedContainer, { backgroundColor: colors.background }]}>
+                <Text style={[styles.CartItemRoastedText, { color: colors.textSecondary }]}>
                   {roasted}
                 </Text>
               </View>
@@ -72,13 +72,12 @@ const CartItem: React.FC<CartItemProps> = ({
               key={index.toString()}
               style={styles.CartItemSizeRowContainer}>
               <View style={styles.CartItemSizeValueContainer}>
-                <View style={[styles.SizeBox, {backgroundColor: colors.surface}]}>
+                <View style={[styles.SizeBox, { backgroundColor: colors.surface }]}>
                   <Text
                     style={[
                       styles.SizeText,
                       {
-                        fontSize:
-                          type == 'Bean' ? FONTSIZE.size_12 : FONTSIZE.size_16,
+                        fontSize: FONTSIZE.size_16,
                         color: colors.textSecondary,
                       },
                     ]}>
@@ -87,7 +86,7 @@ const CartItem: React.FC<CartItemProps> = ({
                 </View>
                 <Text style={styles.SizeCurrency}>
                   {data.currency}
-                  <Text style={[styles.SizePrice, {color: colors.text}]}>
+                  <Text style={[styles.SizePrice, { color: colors.text }]}>
                     {' '}
                     {data.price}
                   </Text>
@@ -105,8 +104,8 @@ const CartItem: React.FC<CartItemProps> = ({
                     size={FONTSIZE.size_10}
                   />
                 </TouchableOpacity>
-                <View style={[styles.CartItemQuantityContainer, {borderColor: '#0A9C4A'}]}>
-                  <Text style={[styles.CartItemQuantityText, {color: colors.text}]}>
+                <View style={[styles.CartItemQuantityContainer, { borderColor: '#0A9C4A' }]}>
+                  <Text style={[styles.CartItemQuantityText, { color: colors.text }]}>
                     {data.quantity}
                   </Text>
                 </View>
@@ -126,7 +125,7 @@ const CartItem: React.FC<CartItemProps> = ({
           ))}
         </View>
       ) : (
-        <View style={[styles.CartItemSingleCard, {backgroundColor: colors.surface}]}>
+        <View style={[styles.CartItemSingleCard, { backgroundColor: colors.surface }]}>
           <View>
             <Image
               source={imagelink_square}
@@ -135,21 +134,20 @@ const CartItem: React.FC<CartItemProps> = ({
           </View>
           <View style={styles.CartItemSingleInfoContainer}>
             <View>
-              <Text style={[styles.CartItemTitle, {color: colors.text}]}>
+              <Text style={[styles.CartItemTitle, { color: colors.text }]}>
                 {name}
               </Text>
-              <Text style={[styles.CartItemSubtitle, {color: colors.textSecondary}]}>
+              <Text style={[styles.CartItemSubtitle, { color: colors.textSecondary }]}>
                 {special_ingredient}
               </Text>
             </View>
             <View style={styles.CartItemSingleSizeValueContainer}>
-              <View style={[styles.SizeBox, {backgroundColor: colors.background}]}>
+              <View style={[styles.SizeBox, { backgroundColor: colors.background }]}>
                 <Text
                   style={[
                     styles.SizeText,
                     {
-                      fontSize:
-                        type == 'Bean' ? FONTSIZE.size_12 : FONTSIZE.size_16,
+                      fontSize: FONTSIZE.size_16,
                       color: colors.textSecondary,
                     },
                   ]}>
@@ -158,7 +156,7 @@ const CartItem: React.FC<CartItemProps> = ({
               </View>
               <Text style={styles.SizeCurrency}>
                 {prices[0].currency}
-                <Text style={[styles.SizePrice, {color: colors.text}]}>
+                <Text style={[styles.SizePrice, { color: colors.text }]}>
                   {' '}
                   {prices[0].price}
                 </Text>
@@ -176,8 +174,8 @@ const CartItem: React.FC<CartItemProps> = ({
                   size={FONTSIZE.size_10}
                 />
               </TouchableOpacity>
-              <View style={[styles.CartItemQuantityContainer, {borderColor: '#0A9C4A'}]}>
-                <Text style={[styles.CartItemQuantityText, {color: colors.text}]}>
+              <View style={[styles.CartItemQuantityContainer, { borderColor: '#0A9C4A' }]}>
+                <Text style={[styles.CartItemQuantityText, { color: colors.text }]}>
                   {prices[0].quantity}
                 </Text>
               </View>
@@ -207,7 +205,7 @@ const styles = StyleSheet.create({
     padding: SPACING.space_12,
     borderRadius: BORDERRADIUS.radius_25,
     shadowColor: '#000000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
@@ -300,7 +298,7 @@ const styles = StyleSheet.create({
     gap: SPACING.space_12,
     borderRadius: BORDERRADIUS.radius_25,
     shadowColor: '#000000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,

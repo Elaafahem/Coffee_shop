@@ -1,19 +1,18 @@
-import {create} from 'zustand';
-import {produce} from 'immer';
-import {persist, createJSONStorage} from 'zustand/middleware';
+import { create } from 'zustand';
+import { produce } from 'immer';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CoffeeData from '../data/CoffeeData';
-import BeansData from '../data/BeansData';
 
 export const useStore = create(
   persist(
     (set, get) => ({
       // Dark Mode
       isDarkMode: false,
-      toggleDarkMode: () => set((state: any) => ({isDarkMode: !state.isDarkMode})),
+      toggleDarkMode: () => set((state: any) => ({ isDarkMode: !state.isDarkMode })),
       // Informations utilisateur
       userName: '',
-      setUserName: (name: string) => set({userName: name}),
+      setUserName: (name: string) => set({ userName: name }),
       user: null,
       // email courant pour associer panier / favoris
       currentUserEmail: '',
@@ -30,11 +29,11 @@ export const useStore = create(
             email && state.userDataByEmail[email]
               ? state.userDataByEmail[email]
               : {
-                  CartList: [],
-                  FavoritesList: [],
-                  OrderHistoryList: [],
-                  CartPrice: 0,
-                };
+                CartList: [],
+                FavoritesList: [],
+                OrderHistoryList: [],
+                CartPrice: 0,
+              };
 
           return {
             ...state,
@@ -47,7 +46,7 @@ export const useStore = create(
             CartPrice: existingData.CartPrice || 0,
             userDataByEmail: {
               ...state.userDataByEmail,
-              ...(email ? {[email]: existingData} : {}),
+              ...(email ? { [email]: existingData } : {}),
             },
           };
         }),
@@ -63,7 +62,6 @@ export const useStore = create(
           CartPrice: 0,
         })),
       CoffeeList: CoffeeData,
-      BeanList: BeansData,
       CartPrice: 0,
       FavoritesList: [],
       CartList: [],
@@ -128,7 +126,7 @@ export const useStore = create(
                 tempprice =
                   tempprice +
                   parseFloat(state.CartList[i].prices[j].price) *
-                    state.CartList[i].prices[j].quantity;
+                  state.CartList[i].prices[j].quantity;
               }
               state.CartList[i].ItemPrice = tempprice.toFixed(2).toString();
               totalprice = totalprice + tempprice;
@@ -152,18 +150,6 @@ export const useStore = create(
                     state.FavoritesList.unshift(state.CoffeeList[i]);
                   } else {
                     state.CoffeeList[i].favourite = false;
-                  }
-                  break;
-                }
-              }
-            } else if (type == 'Bean') {
-              for (let i = 0; i < state.BeanList.length; i++) {
-                if (state.BeanList[i].id == id) {
-                  if (state.BeanList[i].favourite == false) {
-                    state.BeanList[i].favourite = true;
-                    state.FavoritesList.unshift(state.BeanList[i]);
-                  } else {
-                    state.BeanList[i].favourite = false;
                   }
                   break;
                 }
@@ -193,17 +179,6 @@ export const useStore = create(
                     state.CoffeeList[i].favourite = false;
                   } else {
                     state.CoffeeList[i].favourite = true;
-                  }
-                  break;
-                }
-              }
-            } else if (type == 'Beans') {
-              for (let i = 0; i < state.BeanList.length; i++) {
-                if (state.BeanList[i].id == id) {
-                  if (state.BeanList[i].favourite == true) {
-                    state.BeanList[i].favourite = false;
-                  } else {
-                    state.BeanList[i].favourite = true;
                   }
                   break;
                 }
@@ -324,7 +299,7 @@ export const useStore = create(
         ),
     }),
     {
-      name: 'coffee-app',
+      name: 'Fahem_Elaa_G5',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

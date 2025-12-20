@@ -13,11 +13,10 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   useEffect(() => {
-    // SplashScreen.hide();
+
     BootSplash.hide({ fade: true });
-    // Debug: vérifier le type du composant WelcomeScreen
-    // eslint-disable-next-line no-console
-    console.log('WelcomeScreen type:', typeof WelcomeScreen, WelcomeScreen);
+
+    // console.log('WelcomeScreen type:', typeof WelcomeScreen, WelcomeScreen);
   }, []);
   return (
     <NavigationContainer>

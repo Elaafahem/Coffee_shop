@@ -126,9 +126,7 @@ export const FONTSIZE: FontSize = {
   size_30: 30,
 };
 
-// =====================
-// BORDER RADIUS
-// =====================
+
 interface BorderRadius {
   radius_4: number;
   radius_8: number;
@@ -147,9 +145,7 @@ export const BORDERRADIUS: BorderRadius = {
   radius_25: 25,
 };
 
-// =====================
-// DARK / LIGHT COLORS
-// =====================
+
 export const getColors = (isDarkMode: boolean) => {
   return {
     background: isDarkMode ? COLORS.primaryBlackHex : '#F5F5F7',

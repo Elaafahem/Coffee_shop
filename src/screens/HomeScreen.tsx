@@ -51,7 +51,6 @@ const getCoffeeList = (category: string, data: any) => {
 
 const HomeScreen = ({ navigation }: any) => {
   const CoffeeList = useStore((state: any) => state.CoffeeList);
-  const BeanList = useStore((state: any) => state.BeanList);
   const addToCart = useStore((state: any) => state.addToCart);
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
   const addToFavoriteList = useStore((state: any) => state.addToFavoriteList);
@@ -301,7 +300,7 @@ const HomeScreen = ({ navigation }: any) => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={BeanList}
+          data={CoffeeList.slice(0, 4)} // Showing some coffees as special offer
           contentContainerStyle={[
             styles.FlatListContainer,
             { marginBottom: tabBarHeight },
